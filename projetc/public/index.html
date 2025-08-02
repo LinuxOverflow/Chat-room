@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="auth-container">
+    <h1>Welcome to the Chat</h1>
+    <input type="text" id="username" placeholder="Enter your username">
+    <input type="password" id="password" placeholder="Enter your password">
+    <button id="register-btn">Register</button>
+    <button id="login-btn">Login</button>
+  </div>
+
+  <div id="chat-container" style="display: none;">
+    <h1>Chat Room</h1>
+    <input type="text" id="room-id" placeholder="Enter Room ID (leave empty for common)">
+    <button id="join-room-btn">Join Room</button>
+    <button id="join-common-btn">Join Common Room</button>
+    <div id="chat"></div>
+    <input type="text" id="input" placeholder="Type your message...">
+    <button id="send-btn">Send</button>
+  </div>
+
+  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const authContainer = document.getElementById("auth-container");
+    const chatContainer = document.getElementById("chat-container");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const roomInput = document.getElementById("room-id");
+    const registerBtn = document.getElementById("register-btn");
+    const loginBtn = document.getElementById("login-btn");
+    const joinRoomBtn = document.getElementById("join-room-btn");
+    const joinCommonBtn = document.getElementById("join-common-btn");
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("input");
+    const sendBtn = document.getElementById("send-btn");
+
+    let username = '';
+    let currentRoom = '';
+
+    const appendMessage = (data, isSelf = false, systemMessage = false) => {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message";
+
+      if (systemMessage) {
+        msgDiv.innerHTML = `<em>${data.message}</em>`;
+      } else if (isSelf) {
+        msgDiv.innerHTML = `<strong>You:</strong> ${data.message}`;
+      } else {
+        msgDiv.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+      }
+
+      chat.appendChild(msgDiv);
+      chat.scrollTop = chat.scrollHeight;
+    };
+
+    registerBtn.addEventListener("click", () => {
+      const enteredUsername = usernameInput.value.trim();
+      const enteredPassword = passwordInput.value.trim();
+
+      if (enteredUsername && enteredPassword) {
+        socket.emit("register", { username: enteredUsername, password: enteredPassword });
+      } else {
+        alert("Please enter both username and password.");
+      }
+    });
+
+    socket.on("register-success", (data) => alert(data.message));
+    socket.on("register-fail", (data) => alert(data.message));
+
+    loginBtn.addEventListener("click", () => {
+      const enteredUsername = usernameInput.value.trim();
+      const enteredPassword = passwordInput.value.trim();
+
+      if (enteredUsername && enteredPassword) {
+        socket.emit("login", { username: enteredUsername, password: enteredPassword });
+      } else {
+        alert("Please enter both username and password.");
+      }
+    });
+
+    socket.on("login-success", (data) => {
+      alert(data.message);
+      authContainer.style.display = "none";
+      chatContainer.style.display = "block";
+      username = usernameInput.value.trim();
+    });
+
+    socket.on("login-fail", (data) => alert(data.message));
+
+    joinRoomBtn.addEventListener("click", () => {
+      const room = roomInput.value.trim() || "common";
+      currentRoom = room;
+      socket.emit("join-room", room);
+    });
+
+    joinCommonBtn.addEventListener("click", () => {
+      const room = "common";
+      currentRoom = room;
+      socket.emit("join-room", room);
+    });
+
+    sendBtn.addEventListener("click", () => {
+      const message = input.value.trim();
+      if (message && currentRoom) {
+        socket.emit("message", { room: currentRoom, message });
+        input.value = '';
+      }
+    });
+
+    socket.on("self-message", (msg) => appendMessage(msg, true));
+    socket.on("message", (msg) => appendMessage(msg, false));
+
+    socket.on("user-joined", (data) => {
+      appendMessage({ message: `${data.username} joined the room ${data.room}` }, false, true);
+    });
+  </script>
+  </body>
+</html>
