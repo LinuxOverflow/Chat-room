@@ -1,4 +1,5 @@
 # Chat-room
+
 Chat-room Intergrated with tor-network
 
 🔐 Secure Real-Time Chat Application
@@ -47,7 +48,8 @@ JSON	Lightweight, file-based storage
 🛠️ Setup Instructions
 1. Clone the Repository
 
-git clone https://github.com/yourusername/secure-chat-app.git
+git clone https://github.com/LinuxOverflow/Chat-room.git
+
 cd secure-chat-app
 
 2. Install Dependencies
@@ -67,8 +69,14 @@ ngrok http 3000
     Install TOR and configure torrc:
 
 HiddenServiceDir /var/lib/tor/hidden_service/
+
 HiddenServicePort 80 127.0.0.1:3000
 
     Restart TOR and access your .onion address.
 
 📸 Screenshots
+
+
+
+https://github.com/user-attachments/assets/c46856d9-3b83-4465-a74f-7432cc68850b
+
