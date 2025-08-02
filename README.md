@@ -32,14 +32,17 @@ Ngrok	Secure public tunnel for local server
 TOR	Anonymous .onion hosting
 bcrypt	Secure password hashing
 JSON	Lightweight, file-based storage
+
 🗂️ Project Structure
 
 ├── public/
-│   └── index.html        # Chat UI
-├── server.js             # Main server logic
-├── users.json            # File-based user storage
+
+│   └── index.html     
+├── server.js       
+├── users.json            
 ├── package.json
-└── README.md             # Project documentation
+
+└── README.md             
 
 🛠️ Setup Instructions
 1. Clone the Repository
