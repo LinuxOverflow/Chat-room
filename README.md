@@ -25,7 +25,9 @@ Inspired by anonymous forums and knowledge-sharing platforms on the dark web, th
     🐧 Developed and tested in a BlackArch Linux environment
 
 ⚙️ Technologies Used
+
 Technology	Purpose
+
 Node.js	Backend runtime
 Express.js	HTTP server
 Socket.IO	WebSocket communication
@@ -36,43 +38,42 @@ JSON	Lightweight, file-based storage
 
 🗂️ Project Structure
 
-├── public/
-
-│   └── index.html     
-├── server.js       
-├── users.json            
-├── package.json
-
-└── README.md             
+    ├── public/
+    │   └── index.html        # Chat UI
+    ├── server.js             # Main server logic
+    ├── users.json            # File-based user storage
+    ├── package.json
+    └── README.md             # Project documentation
+            
 
 🛠️ Setup Instructions
 1. Clone the Repository
 
-git clone https://github.com/LinuxOverflow/Chat-room.git
+        git clone https://github.com/LinuxOverflow/Chat-room.git
 
-cd secure-chat-app
+        cd secure-chat-app
 
 2. Install Dependencies
 
-npm install
+        npm install
 
 3. Run the App Locally
 
-node server.js
+       node server.js
 
 4. Expose via Ngrok (optional)
 
-ngrok http 3000
+        ngrok http 3000
 
 5. Host as TOR Hidden Service
 
-    Install TOR and configure torrc:
+Install TOR and configure torrc:
 
-HiddenServiceDir /var/lib/tor/hidden_service/
+    HiddenServiceDir /var/lib/tor/hidden_service/
 
-HiddenServicePort 80 127.0.0.1:3000
+    HiddenServicePort 80 127.0.0.1:3000
 
-    Restart TOR and access your .onion address.
+Restart TOR and access your .onion address.
 
 📸 Screenshots
 
